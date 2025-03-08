@@ -1,0 +1,111 @@
+.main-display {
+  display: flex;
+  flex-direction: column; /* จัดเรียงองค์ประกอบในแนวตั้ง */
+  justify-content: center; /* จัดกลางในแนวตั้ง */
+  align-items: center; /* จัดกลางในแนวนอน */
+  height: 50vh; /* ใช้ความสูงเต็มหน้าจอ */
+  text-align: center; 
+}
+
+.clear {
+  background-color: #87CEFA;
+}
+
+.cloudy {
+  background-color: #B0C4DE;
+}
+
+.fog {
+  background-color: #D3D3D3;
+}
+
+.drizzle {
+  background-color: #A9C9FF;
+}
+
+.rain {
+  background-color: #4B6CB7;
+}
+
+.snow {
+  background-color: #E0F7FA;
+}
+
+.thunderstorm {
+  background-color: #3e3857;
+}
+
+.default {
+  background-color: #ECE9E6;
+}
+
+.main-display h1 {
+  font-size: 4rem;
+}
+
+.main-btn {
+  background-color: #9DC08B;
+  color: white; 
+  border: none; 
+  padding: 5px 10px; 
+  cursor: pointer; /* เปลี่ยนเคอร์เซอร์เมื่อชี้ไปที่ปุ่ม */
+  transition: background-color 0.3s ease; /* การเปลี่ยนสีเมื่อ hover */
+  border-radius: 10px; 
+}
+
+.main-btn:hover {
+  background-color: #3A7D44; 
+}
+
+.card {
+    width: 200px; 
+    height: 200px; 
+    background-color: #f0f0f0; 
+    border-radius: 10px; 
+    padding: 10px;
+    display: flex; 
+    flex-direction: column; /* จัดให้เนื้อหาวางแนวตั้ง */
+    justify-content: space-between; /* ทำให้ระยะห่างระหว่างชื่อเมืองกับปุ่มลบ */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* เงา */
+  }
+
+  .card:hover {
+    background-color: grey; 
+    color: white;
+  }
+  
+  .card h3 {
+    font-size: 16px; 
+    font-weight: bold; 
+    margin: 0;
+  }
+  
+  .card button {
+    background-color: #E07A5F; 
+    color: white; 
+    border: none; 
+    padding: 5px 10px;
+    cursor: pointer; /* เปลี่ยนเคอร์เซอร์เมื่อชี้ไปที่ปุ่ม */
+    border-radius: 10px; 
+    transition: background-color 0.3s ease; /* การเปลี่ยนสีเมื่อ hover */
+  }
+
+  .card p {
+    font-size: 2.5rem;
+    font-weight: bold; 
+    color: black; 
+    margin-top: 5px;
+    text-align: center;
+  }
+  
+  .card button:hover {
+    background-color: #690B22; 
+  }
+
+  .favorite-list {
+    display: flex; 
+    flex-wrap: wrap; 
+    gap: 20px; 
+    justify-content: center; 
+    margin: 20px 0;
+  }

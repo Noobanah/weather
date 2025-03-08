@@ -1,0 +1,57 @@
+body {
+  font-family: Poppins, sans-serif;
+}
+
+
+.head-container {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #f0f0f0;
+    gap: 10px; 
+    font-family: Poppins
+  }
+  
+  #app-name {
+    margin-left: 10px;
+  }
+  
+  input.h-item {
+    flex-grow: 1; /* ขยาย input ให้เต็มพื้นที่ที่เหลือ */
+    padding: 8px;
+    font-size: 16px; 
+    border: 1px solid #ccc; 
+    border-radius: 10px; /* ขอบมุมมน */
+    width: 100%; /* ทำให้ input กว้างสุดใน container */
+  }
+  
+  button.h-item {
+    flex-shrink: 0; 
+    padding: 8px 15px;
+    border: none; 
+    background-color: #4CAF50; 
+    color: white; 
+    cursor: pointer; /* เปลี่ยนเคอร์เซอร์เป็น pointer เมื่อชี้ที่ปุ่ม */
+    border-radius: 10px;
+  }
+  
+  button.h-item:hover {
+    background-color: #45a049; /* เปลี่ยนสีปุ่มเมื่อ hover */
+  }
+
+  #suggestions-list {
+    list-style: none;
+    margin-top: 10px;
+    padding: 0;
+  }
+  
+  #suggestions-list li {
+    padding: 8px;
+    background-color: #f0f0f0;
+    cursor: pointer;
+  }
+  
+  #suggestions-list li:hover {
+    background-color: #ddd;
+  }
+  
