@@ -1,7 +1,7 @@
 import React from 'react';
 import './card.css';
 
-export default function MainDisplay({ location, handleFavorite, weather }) {
+export default function MainDisplay({location, weather, onFavoriteAdded}) {
   if (!weather) {
     return <p>Loading</p>;
   }
@@ -23,7 +23,7 @@ export default function MainDisplay({ location, handleFavorite, weather }) {
   const weatherClass = getWeatherClass(weatherCode);
 
   function toAddFavorite() {
-    handleFavorite(location);
+    onFavoriteAdded(location);
   }
 
   return (
