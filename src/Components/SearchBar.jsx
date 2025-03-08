@@ -1,12 +1,12 @@
 import React from 'react';
 import '../index.css';
 
-export default function Heading({ handlePlace }) {
-  function handleSearch(event) {
+export default function SearchBar({ onSearchEntered }) {
+  function toSearch(event) {
     if (event.key === 'Enter') {
       const searchValue = event.target.value.trim();
       if (searchValue) {
-        handlePlace(searchValue);
+        onSearchEntered(searchValue);
       }
       event.target.value = '';
     }
@@ -22,7 +22,7 @@ export default function Heading({ handlePlace }) {
           className="h-item"
           id="search"
           placeholder="type name of city in english, then press Enter!"
-          onKeyDown={handleSearch}
+          onKeyDown={toSearch}
         />
       </div>
     </>
