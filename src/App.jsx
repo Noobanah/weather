@@ -57,15 +57,6 @@ function App() {
     fetchData();s
   }
 
-  async function search(query) {
-    setLocationName(query);
-    const coordinates = await fetchCoordinates(query);
-    if (coordinates) {
-      const weatherData = await fetchWeather(coordinates.latitude, coordinates.longitude);
-      setWeather(weatherData);
-    }
-  }
-
   async function fetchData() {
     const coordinates = await fetchCoordinates(locationName);
     if (coordinates) {
