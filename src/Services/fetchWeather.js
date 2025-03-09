@@ -1,4 +1,5 @@
 import axios from "axios";
+import Location from "../Model/Location.js";
 
 export const fetchCoordinates = async (location) => {
   try {
@@ -22,6 +23,22 @@ export const fetchWeather = async (latitude, longitude) => {
       `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m&hourly=weathercode`
     );
     return response.data;
+  } catch (error) {
+    console.error("Error fetching weather:", error);
+    return null;
+  }
+};
+
+export const fetchLocations = async (locations) => {
+  try {
+    return Promise.all(locations.map(async (location) => {
+      const response = await axios.get(
+          `https://api.open-meteo.com/v1/forecast?latitude=${location.latitude}&longitude=${location.longitude}&hourly=temperature_2m&hourly=weathercode`
+      );
+      const weather = response.data;
+      console.log(`fetchWeathers location: ${location.name} - ${location.latitude}, ${location.longitude} - ${weather?.hourly?.temperature_2m[0]}`);
+      return new Location(location.name, location.latitude, location.longitude, weather);
+    }));
   } catch (error) {
     console.error("Error fetching weather:", error);
     return null;

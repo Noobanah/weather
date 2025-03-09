@@ -3,7 +3,7 @@ import SearchBar from './Components/SearchBar.jsx';
 import Favorite from './Components/Favorite';
 import MainDisplay from './Components/MainDisplay';
 import Location from "./Model/Location.js";
-import { fetchCoordinates, fetchWeather } from './Services/fetchWeather';
+import { fetchCoordinates, fetchWeather, fetchLocations } from './Services/fetchWeather';
 
 function App() {
   const [searchQuery, setSearchQuery] = useState('Bangkok');
@@ -11,17 +11,16 @@ function App() {
   const [favoriteLocations, setFavoriteLocations] = useState([]);
 
   useEffect(() => {
-    fetchData()
+    fetchData().then()
     const interval = setInterval(fetchData, 5000); // Fetch every 5 seconds
-
     return () => clearInterval(interval);
   }, [searchQuery]);
 
-  async function handleSearchEntered(searchValue) {
+  function handleSearchEntered(searchValue) {
     setSearchQuery(() => searchValue);
   }
 
-  async function handleFavoriteAdded(addedFavoriteLocation) {
+  function handleFavoriteAdded(addedFavoriteLocation) {
     if (favoriteLocations.some((favoriteLocation) => favoriteLocation.name === addedFavoriteLocation.name)) {
       alert("You already added this city.");
       return;
@@ -57,13 +56,25 @@ function App() {
           fetchedCoordinates["longitude"],
           weatherData));
     }
+
+    const fetchFavoriteLocationsData = async (prevFavoriteLocations) => {
+      const updatedFavoriteLocations = await fetchLocations(prevFavoriteLocations);
+      setFavoriteLocations(prev => updatedFavoriteLocations);
+    };
+
+    setFavoriteLocations((prevFavoriteLocations) => {
+      fetchFavoriteLocationsData(prevFavoriteLocations);
+      return prevFavoriteLocations;
+    });
   }
 
   return (
     <>
       <SearchBar onSearchEntered={handleSearchEntered} />
-      <MainDisplay location={currentLocation} onFavoriteAdded={handleFavoriteAdded}/>
-      <Favorite locations={favoriteLocations} onLocationPicked={handleFavoriteLocationPicked} onLocationDeleted={handleFavoriteLocationDeleted} />
+      <MainDisplay location={currentLocation} onFavoriteAdded={handleFavoriteAdded} />
+      <Favorite locations={favoriteLocations}
+                onLocationPicked={handleFavoriteLocationPicked}
+                onLocationDeleted={handleFavoriteLocationDeleted} />
     </>
   );
 }
