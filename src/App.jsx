@@ -59,7 +59,7 @@ function App() {
 
     const fetchFavoriteLocationsData = async (prevFavoriteLocations) => {
       const updatedFavoriteLocations = await fetchLocations(prevFavoriteLocations);
-      setFavoriteLocations(prev => updatedFavoriteLocations);
+      setFavoriteLocations(() => updatedFavoriteLocations);
     };
 
     setFavoriteLocations((prevFavoriteLocations) => {
