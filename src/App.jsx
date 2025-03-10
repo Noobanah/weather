@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import SearchBar from './Components/SearchBar.jsx';
 import Favorite from './Components/Favorite';
 import MainDisplay from './Components/MainDisplay';
-import Location from "./Model/Location.js";
-import { fetchCoordinates, fetchWeather, fetchLocations } from './Services/fetchWeather';
+import { findLocation, fetchLocations } from './Services/fetchWeather';
 
 function App() {
   const [searchQuery, setSearchQuery] = useState('Bangkok');
@@ -45,16 +44,9 @@ function App() {
   }
 
   async function fetchData() {
-    const fetchedCoordinates = await fetchCoordinates(searchQuery);
-
-    if (fetchedCoordinates) {
-      const weatherData = await fetchWeather(fetchedCoordinates.latitude, fetchedCoordinates.longitude);
-
-      setCurrentLocation(new Location(
-          fetchedCoordinates["name"],
-          fetchedCoordinates["latitude"],
-          fetchedCoordinates["longitude"],
-          weatherData));
+    const searchedLocation = await findLocation(searchQuery);
+    if (searchedLocation) {
+      setCurrentLocation(searchedLocation);
     }
 
     const fetchFavoriteLocationsData = async (prevFavoriteLocations) => {

@@ -44,3 +44,24 @@ export const fetchLocations = async (locations) => {
     return null;
   }
 };
+
+export const findLocation = async (locationName) => {
+  try {
+    const fetchedCoordinates = await fetchCoordinates(locationName);
+
+    if (fetchedCoordinates) {
+      const weatherData = await fetchWeather(fetchedCoordinates.latitude, fetchedCoordinates.longitude);
+
+      return new Location(
+          fetchedCoordinates["name"],
+          fetchedCoordinates["latitude"],
+          fetchedCoordinates["longitude"],
+          weatherData);
+    } else {
+      return null;
+    }
+  } catch (error) {
+    console.error("Error fetching weather:", error);
+    return null;
+  }
+};
