@@ -1,70 +1,72 @@
 import React, { useState, useEffect } from 'react';
-import Heading from './Components/Heading';
+import SearchBar from './Components/SearchBar.jsx';
 import Favorite from './Components/Favorite';
 import MainDisplay from './Components/MainDisplay';
-import { fetchCoordinates, fetchWeather } from './Services/fetchWeather';
+import { findLocation, fetchLocations } from './Services/fetchWeather';
 
 function App() {
-  const [location, setLocation] = useState('Bangkok');
-  const [favorite, setFavorite] = useState([]);
-  const [weather, setWeather] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('Bangkok');
+  const [currentLocation, setCurrentLocation] = useState(null);
+  const [favoriteLocations, setFavoriteLocations] = useState([]);
 
   useEffect(() => {
-    handlePlace('Bangkok');
-  }, []);
+    fetchData().then()
+    const interval = setInterval(fetchData, 5000); // Fetch every 5 seconds
+    return () => clearInterval(interval);
+  }, [searchQuery]);
 
-  async function handlePlace(query) {
-    setLocation(query);
-    const coordinates = await fetchCoordinates(query);
-    if (coordinates) {
-      const weatherData = await fetchWeather(coordinates.latitude, coordinates.longitude);
-      setWeather(weatherData);
-    }
+  function handleSearchEntered(searchValue) {
+    setSearchQuery(() => searchValue);
   }
 
-  async function handleFavorite(favItem) {
-    if (favorite.some((item) => item.name === favItem)) {
+  function handleFavoriteAdded(addedFavoriteLocation) {
+    if (favoriteLocations.some((favoriteLocation) => favoriteLocation.name === addedFavoriteLocation.name)) {
       alert("You already added this city.");
       return;
     }
 
     try {
-      let temperature;
-
-      // ใช้ข้อมูลที่มีอยู่แล้ว ถ้า favItem เป็นเมืองที่แสดงอยู่
-      if (favItem === location && weather) {
-        temperature = weather.hourly.temperature_2m[0];
-      } else {
-        // ถ้าเป็นเมืองใหม่ ค่อยเรียก API
-        const coordinates = await fetchCoordinates(favItem);
-        if (!coordinates) return;
-        const weatherData = await fetchWeather(coordinates.latitude, coordinates.longitude);
-        if (!weatherData) return;
-        temperature = weatherData.hourly.temperature_2m[0];
-      }
-
-      setFavorite((prevFavorites) => [
-        ...prevFavorites,
-        { name: favItem, temperature },
+      setFavoriteLocations((prevFavoriteLocations) => [
+        ...prevFavoriteLocations,
+        addedFavoriteLocation,
       ]);
     } catch (error) {
-      console.error("Error adding favorite:", error);
+      console.error("Error adding favoriteLocations:", error);
     }
   }
 
-  function deleteNote(index) {
-    setFavorite((prevFavorites) => prevFavorites.filter((_, i) => i !== index));
+  function handleFavoriteLocationPicked(pickedLocation) {
+    setSearchQuery(() => pickedLocation);
   }
 
-  function currentTown(place) {
-    handlePlace(place);
+  function handleFavoriteLocationDeleted(index) {
+    setFavoriteLocations((prevFavorites) => prevFavorites.filter((_, i) => i !== index));
+  }
+
+  async function fetchData() {
+    const searchedLocation = await findLocation(searchQuery);
+    if (searchedLocation) {
+      setCurrentLocation(searchedLocation);
+    }
+
+    const fetchFavoriteLocationsData = async (prevFavoriteLocations) => {
+      const updatedFavoriteLocations = await fetchLocations(prevFavoriteLocations);
+      setFavoriteLocations(() => updatedFavoriteLocations);
+    };
+
+    setFavoriteLocations((prevFavoriteLocations) => {
+      fetchFavoriteLocationsData(prevFavoriteLocations);
+      return prevFavoriteLocations;
+    });
   }
 
   return (
     <>
-      <Heading handlePlace={handlePlace} />
-      <MainDisplay handleFavorite={handleFavorite} location={location} weather={weather} />
-      <Favorite favorite={favorite} currentTown={currentTown} deleteNote={deleteNote} />
+      <SearchBar onSearchEntered={handleSearchEntered} />
+      <MainDisplay location={currentLocation} onFavoriteAdded={handleFavoriteAdded} />
+      <Favorite locations={favoriteLocations}
+                onLocationPicked={handleFavoriteLocationPicked}
+                onLocationDeleted={handleFavoriteLocationDeleted} />
     </>
   );
 }

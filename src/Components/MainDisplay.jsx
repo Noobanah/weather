@@ -1,13 +1,13 @@
 import React from 'react';
 import './card.css';
 
-export default function MainDisplay({ location, handleFavorite, weather }) {
-  if (!weather) {
+export default function MainDisplay({location, onFavoriteAdded}) {
+  if (!location) {
     return <p>Loading</p>;
   }
 
-  const temperature = weather?.hourly?.temperature_2m?.[0] || 'not found';
-  const weatherCode = weather?.hourly?.weathercode?.[0] || 0; 
+  const temperature = location.weather?.hourly?.temperature_2m?.[0] || 'not found';
+  const weatherCode = location.weather?.hourly?.weathercode?.[0] || 0;
 
   function getWeatherClass(code) {
     if (code === 0) return "clear";
@@ -23,12 +23,12 @@ export default function MainDisplay({ location, handleFavorite, weather }) {
   const weatherClass = getWeatherClass(weatherCode);
 
   function toAddFavorite() {
-    handleFavorite(location);
+    onFavoriteAdded(location);
   }
 
   return (
     <div className={`main-display ${weatherClass}`}>
-      <h2>{location}</h2>
+      <h2>{location.name}</h2>
       <h1>{temperature}°C</h1>
       <button className="main-btn" onClick={toAddFavorite}>
         Add to favorite
